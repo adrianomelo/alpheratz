@@ -1,3 +1,10 @@
+
+enablePlugins(JavaAppPackaging)
+
+name := "alpheratz"
+version := "0.1"
+//dockerUsername := Some("adrianomelo")
+
 scalaVersion := "2.12.12"
 
 val akkaVersion = "2.6.8"
