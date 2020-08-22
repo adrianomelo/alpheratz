@@ -35,7 +35,7 @@ object Server {
         }.to(Sink.actorRef[User.IncomingMessage](userActor, PoisonPill))
 
       val outgoingMessages: Source[Message, NotUsed] =
-        Source.actorRef[User.OutgoingMessage](10, OverflowStrategy.fail)
+        Source.actorRef[User.OutgoingMessage](10, OverflowStrategy.dropNew)
         .mapMaterializedValue { outActor =>
           // give the user actor a way to send messages out
           userActor ! User.Connected(outActor)
@@ -51,16 +51,10 @@ object Server {
     val route =
       concat (
         path("public.gif") {
-          get {
-            extractHost { host =>
-              extractRequest { context =>
-                chatRoom ! ChatRoom.ChatMessage(context.toString())
-                chatRoom ! ChatRoom.ChatMessage(host.toString())
-                
-                //chatRoom ! ChatRoom.ChatMessage(context.getHeader("Referer").get().value())
-
-                complete("OK")
-              }
+          extractHost { host =>
+            headerValueByName("User-Agent") { userAgent =>
+              chatRoom ! ChatRoom.ChatMessage("{\"host\": \"" + host.toString() + "\", \"user-agent\": \"" + userAgent + "\"}")
+              getFromFile("resources/minimal.gif")
             }
           }
         },
@@ -71,14 +65,14 @@ object Server {
             handleWebSocketMessages(newUser())
           },
 
-          post {
+          /*post {
             cors() {
               entity(as[String]) { data =>
                 chatRoom ! ChatRoom.ChatMessage(data)
                 complete("OK")
               }
             }
-          }
+          }*/
         )
       }
       )
