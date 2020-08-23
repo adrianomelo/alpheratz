@@ -4,6 +4,7 @@ enablePlugins(JavaAppPackaging)
 name := "alpheratz"
 version := "0.1"
 dockerUsername := Some("adrianomelo")
+dockerExposedPorts := Seq(5000)
 
 scalaVersion := "2.12.12"
 
