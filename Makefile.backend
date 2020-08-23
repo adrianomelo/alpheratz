@@ -1,0 +1,10 @@
+
+test:
+	@(cd backend; sbt test)
+
+start:
+	@(cd backend; sbt run)
+
+deploy:
+	@(cd backend; sbt docker:publish)
+

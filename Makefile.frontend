@@ -1,0 +1,7 @@
+
+init:
+	@(cd dashboard; yarn install)
+
+start:
+	@(cd dashboard; flutter run -d web)
+
