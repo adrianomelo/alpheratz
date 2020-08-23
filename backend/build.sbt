@@ -3,7 +3,7 @@ enablePlugins(JavaAppPackaging)
 
 name := "alpheratz"
 version := "0.1"
-//dockerUsername := Some("adrianomelo")
+dockerUsername := Some("adrianomelo")
 
 scalaVersion := "2.12.12"
 
